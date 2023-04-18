@@ -40,6 +40,19 @@
 
     ];
 
+    $park = $_GET['park'];
+
+    if ($park === 'si') {
+        $filteredHotels = array_filter($hotels, function($hotel) {
+            return $hotel['parking'] === true;
+        });
+    } elseif ($park === 'no') {
+        $filteredHotels = array_filter($hotels, function($hotel) {
+            return $hotel['parking'] === false;
+        });
+    } else {
+        $filteredHotels = $hotels;
+    };
 ?>
 
 <!DOCTYPE html>
@@ -52,6 +65,18 @@
     <title>Hotels</title>
 </head>
 <body>
+    <div>
+        <form method="GET" action="index.php">
+            <lable for="park">Parcheggio</lable>
+            <select name="park" id="park">
+                <option value="">Tutti</option>
+                <option value="si">Disponibile</option>
+                <option value="no">Non disponibile</option>
+            </select>
+
+            <button type="submit">Invia</button>
+        </form>
+    </div>
     <main>
         <table class="table table-striped text-center text-capitalize">
             <thead>
@@ -64,8 +89,7 @@
             </thead>
             <tbody>
                 <?php
-                    foreach($hotels as $hotel){
-
+                    foreach($filteredHotels as $hotel){
                         echo "<tr>";
 
                         if($hotel['parking']){
@@ -74,7 +98,7 @@
                         }else{
                             $hotel['parking'] = 'No';
                         }
-                        
+
                         foreach($hotel as $valeu => $key){
                             echo "<td>" . $key . "</td>";
                         };
